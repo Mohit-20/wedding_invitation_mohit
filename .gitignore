@@ -1,0 +1,9 @@
+# Never publish the readable personal letter or passphrase notes
+/private/letter.txt
+/private/*.plain.txt
+/private/*.passphrase
+/private/.secret
+.env
+.env.*
+*.key
+*.pem
