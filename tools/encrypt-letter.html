@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prepare Akanksha's encrypted letter</title>
+<style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;padding:28px 16px;background:#f8eee2;color:#513a30;font:16px/1.6 system-ui,sans-serif}
+main{max-width:620px;margin:5vh auto;background:#fffaf3;border:1px solid #ead5c2;border-radius:22px;padding:clamp(22px,5vw,42px);box-shadow:0 18px 55px #6a46301a}
+h1{font:italic 38px Georgia,serif;margin:0 0 8px}p{color:#806758}.field{margin:20px 0}
+label{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+input{width:100%;padding:14px;border:1px solid #d9bda7;border-radius:12px;background:#fff;color:#493329;font:inherit}
+button{width:100%;border:0;border-radius:999px;padding:15px 20px;background:#ad6953;color:white;font-weight:700;font-size:15px;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}#status{min-height:30px;margin-top:16px;font-weight:600}
+.note{font-size:13px;background:#f6eadc;border-radius:12px;padding:13px}
+</style></head><body><main>
+<div style="color:#ad6953;font-size:12px;letter-spacing:.2em;font-weight:700">MOHIT & AKANKSHA · LOCAL SETUP</div>
+<h1>Lock the little letter ♡</h1>
+<p>This tool runs in your browser. It does not upload your letter or send your passphrase anywhere.</p>
+<div class="field"><label for="letter">1. Select private/letter.txt</label><input id="letter" type="file" accept=".txt,text/plain"></div>
+<div class="field"><label for="pass">2. Create a private passphrase</label><input id="pass" type="password" autocomplete="new-password" minlength="12" placeholder="Use a phrase only you both know"></div>
+<div class="field"><label for="confirm">3. Confirm passphrase</label><input id="confirm" type="password" autocomplete="new-password" minlength="12" placeholder="Type it again"></div>
+<p class="note">Use at least 12 characters, ideally a memorable phrase that isn't shown anywhere on the website. Do not use the hint “mohu” as the encryption passphrase. Save it somewhere safe or share it with Akanksha privately. It cannot be recovered if lost.</p>
+<button id="encrypt">Encrypt and download letter.enc</button><div id="status" role="status" aria-live="polite"></div>
+</main><script>
+const $=s=>document.querySelector(s);
+const b64=bytes=>{let bin="";bytes.forEach(x=>bin+=String.fromCharCode(x));return btoa(bin)};
+$("encrypt").addEventListener("click",async()=>{
+ const file=$("letter").files[0],pass=$("pass").value,confirm=$("confirm").value,status=$("status"),button=$("encrypt");
+ if(!file){status.textContent="Please select private/letter.txt first.";return}
+ if(pass.length<12){status.textContent="Use a passphrase with at least 12 characters.";return}
+ if(pass!==confirm){status.textContent="The two passphrases don't match.";return}
+ if(!crypto.subtle){status.textContent="Web Crypto is unavailable. Open this file in a modern browser.";return}
+ button.disabled=true;status.textContent="Encrypting locally…";
+ try{
+  const plain=await file.text(),salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]);
+  const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:310000,hash:"SHA-256"},material,{name:"AES-GCM",length:256},false,["encrypt"]);
+  const cipher=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(plain));
+  const envelope={version:1,algorithm:"AES-GCM",kdf:"PBKDF2-SHA-256",iterations:310000,salt:b64(salt),iv:b64(iv),ciphertext:b64(new Uint8Array(cipher))};
+  const blob=new Blob([JSON.stringify(envelope)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="letter.enc";a.click();URL.revokeObjectURL(url);
+  status.textContent="Done! Move letter.enc into the project's private/ folder. Then upload the project to GitHub.";
+ }catch(e){status.textContent="Encryption failed: "+e.message}
+ finally{button.disabled=false}
+});
+</script></body></html>
