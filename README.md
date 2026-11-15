@@ -24,8 +24,6 @@ The supplied Google Maps destination pins are retained.
 
 The project includes `private/letter.enc`, which contains the personal letter encrypted with PBKDF2-SHA-256 (310,000 iterations) and AES-256-GCM. The passphrase is **not** stored in the website, HTML, JavaScript, or repository. The browser decrypts the letter only after the correct passphrase is entered. The chosen passphrase is intentionally short for this playful reveal, so this is not suitable for protecting highly sensitive information.
 
-Keep the passphrase somewhere safe and share it with Akanksha privately. If it is lost, the letter cannot be recovered. Do not add the passphrase to any website file, README, URL, or GitHub commit.
-
 The plaintext letter is supplied separately as a local-only file for your own records; do not upload it to GitHub. `.gitignore` excludes `private/letter.txt` if you create that file in this project folder.
 
 ## Publish with GitHub Pages
