@@ -161,7 +161,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   addLabel(hills,"Matheran","22 August · A little detour").position.set(0,-2.1,.5);
   scenes.push({group:hills,center:3});
 
-  // 05 — Sakharpuda: two interlocked 3D rings and a cut-gem centerpiece.
+  // 05 — Kacche Pakke (Roka): two interlocked 3D rings and a cut-gem centerpiece.
   const rings=makeGroup(28);
   const ringMat=mat(0xe8c17d,.19,.88);
   const ringA=new THREE.Mesh(new THREE.TorusGeometry(.9,.12,24,120),ringMat);
@@ -172,7 +172,7 @@ import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
   diamond.position.set(0,.9,.3);rings.add(diamond);
   const halo=new THREE.Mesh(new THREE.TorusGeometry(2.05,.015,10,120),new THREE.MeshBasicMaterial({color:0xd9a56d,transparent:true,opacity:.7}));
   halo.position.z=-.5;rings.add(halo);
-  addLabel(rings,"A promise","28 July · Sakharpuda").position.set(0,-1.8,.3);
+  addLabel(rings,"A promise","28 July · Kacche Pakke").position.set(0,-1.8,.3);
   scenes.push({group:rings,center:4});
 
   // A real framed photograph using the supplied storybook artwork, not a placeholder image.

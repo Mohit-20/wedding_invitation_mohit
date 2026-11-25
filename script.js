@@ -112,7 +112,7 @@ Object.entries(EVENTS).forEach(([key, data]) => {
       const blob = new Blob([body], {type:"text/calendar;charset=utf-8"});
       const url = URL.createObjectURL(blob);
       const download = document.createElement("a"); download.href = url; download.download = `${key}-mohit-akanksha.ics`;
-      document.body.appendChild(download); download.click(); download.remove(); URL.revokeObjectURL(url);
+      document.body.appendChild(download); download.click(); download.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 60000);
     });
     actions.append(google, ics);
     card.appendChild(actions);
@@ -462,7 +462,7 @@ Object.entries(EVENTS).forEach(([key, data]) => {
   // Pinned scrollytelling: scroll position directly scrubs each chapter in and out.
   // No scroll hijacking; wheel, touch, keyboard and reverse scrolling stay native.
   const storyTrack = $(".story-scroll-track");
-  if (storyTrack && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (storyTrack && innerWidth > 620 && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const stage = $(".story-stage");
     const chapters = $$(".story-chapter", stage);
     const introLockup = $(".story-intro-lockup", stage);
@@ -537,6 +537,22 @@ Object.entries(EVENTS).forEach(([key, data]) => {
     addEventListener("scroll", queueStory, {passive:true});
     addEventListener("resize", queueStory, {passive:true});
     paintStory();
+  } else if (storyTrack && innerWidth <= 620) {
+    // On phones, show all chapters in a normal document flow and keep the counter in sync.
+    const chapters = $$(".story-chapter", storyTrack);
+    const currentLabel = $("#storyCurrent");
+    const progressBar = $("#storyProgress");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(entries => {
+        const visible = entries.filter(entry => entry.isIntersecting)
+          .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const index = chapters.indexOf(visible.target);
+        if (currentLabel && index >= 0) currentLabel.textContent = String(index + 1).padStart(2,"0");
+        if (progressBar && index >= 0) progressBar.style.width = `${((index + 1) / chapters.length * 100).toFixed(1)}%`;
+      }, {threshold:[0.25,0.5,0.75]});
+      chapters.forEach(chapter => observer.observe(chapter));
+    }
   }
 
   // Cinematic journey-map navigation: jump to the matching native-scroll chapter.
@@ -546,6 +562,10 @@ Object.entries(EVENTS).forEach(([key, data]) => {
       const track = $(".story-scroll-track");
       const chapters = $$(".story-chapter");
       if (!track || !chapters.length || !Number.isFinite(index)) return;
+      if (innerWidth <= 620) {
+        chapters[Math.max(0, Math.min(chapters.length - 1, index))].scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"center"});
+        return;
+      }
       const travel = Math.max(1, track.offsetHeight - innerHeight);
       const targetProgress = Math.max(0, Math.min(.98, (index + .36) / chapters.length));
       const top = track.getBoundingClientRect().top + scrollY + targetProgress * travel;

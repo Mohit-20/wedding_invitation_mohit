@@ -630,3 +630,254 @@ body.invitation-locked #welcomeScreen {
   overflow: hidden;
   z-index: 99999;
 }
+
+
+/* V17 RESPONSIVE REBUILD: mobile story becomes a readable page, not overlapping scrollytelling. */
+@media (max-width: 620px) {
+  .story-scroll-track { height: auto !important; }
+  .story-stage {
+    position: relative !important; top: auto !important; height: auto !important;
+    min-height: 0 !important; max-height: none !important; overflow: hidden !important;
+    padding: 92px 5vw 38px !important;
+  }
+  .story-backdrop { position: absolute !important; inset: 0 !important; opacity: .22; }
+  .story-halo { width: 110vw; height: 110vw; right: -35%; top: -10%; }
+  .story-couple-art { left: auto !important; right: -18% !important; bottom: 0 !important;
+    width: 78vw !important; height: 48vw !important; opacity: .13 !important;
+    mask-image: linear-gradient(to top, #000 15%, transparent 100%) !important; }
+  .story-world-canvas { display: none !important; }
+  .story-topline { top: 22px !important; left: 5vw !important; right: 5vw !important; }
+  .story-intro-lockup {
+    position: relative !important; inset: auto !important; width: auto !important;
+    margin: 0 auto 34px !important; opacity: 1 !important; transform: none !important;
+    text-align: left !important; max-width: 560px;
+  }
+  .story-intro-lockup h2 { font-size: clamp(38px, 10vw, 52px) !important; margin: 15px 0 !important; }
+  .story-intro-lockup p { font-size: 15px !important; line-height: 1.6; max-width: 34ch; }
+  .story-scroll-cue { margin-top: 8px !important; }
+  .story-chapters { position: relative !important; inset: auto !important; display: grid !important;
+    gap: 18px !important; pointer-events: auto !important; }
+  .story-chapter {
+    position: relative !important; inset: auto !important; left: auto !important; top: auto !important;
+    width: 100% !important; margin: 0 !important; opacity: 1 !important; visibility: visible !important;
+    transform: none !important; z-index: 1 !important; pointer-events: auto !important;
+    will-change: auto !important;
+  }
+  .chapter-index { margin: 0 0 8px 4px !important; font-size: 8px !important; line-height: 1.5; }
+  .chapter-index span { margin-left: 4px !important; }
+  .chapter-card {
+    min-height: 0 !important; padding: 23px 20px 25px !important;
+    border-radius: 15px !important; box-shadow: 0 12px 28px rgba(0,0,0,.22) !important;
+  }
+  .chapter-card h3 { font-size: clamp(30px, 8.2vw, 40px) !important; line-height: 1.08 !important;
+    margin: 16px 0 12px !important; overflow-wrap: anywhere; }
+  .chapter-card p { max-width: 100% !important; font-size: 14px !important; line-height: 1.7 !important; }
+  .chapter-doodle { opacity: .22 !important; right: 12px !important; bottom: 8px !important; }
+  .chapter-chat { max-width: 100%; }
+  .story-bottomline { position: relative !important; inset: auto !important; margin-top: 28px !important;
+    gap: 12px !important; font-size: 7px !important; }
+  .story-bottomline>span:last-child { display: inline !important; }
+  .story-progress-track { max-width: 80px !important; }
+
+  /* Mobile keeps the animated, clickable journey route; its own vertical path is defined below. */
+
+  /* Event actions are full-width, thumb-friendly controls on mobile. */
+  .event-card { grid-template-columns: 56px minmax(0, 1fr) !important; column-gap: 12px !important; }
+  .event-illustration { font-size: 34px !important; }
+  .event-actions { grid-column: 1 / -1 !important; display: grid !important;
+    grid-template-columns: 1fr !important; gap: 9px !important; margin-top: 16px !important; }
+  .event-actions a { width: 100% !important; min-height: 46px !important; padding: 12px 14px !important;
+    font-size: 10px !important; letter-spacing: .08em !important; border-radius: 8px !important; }
+  .map-link { min-height: 42px; display: inline-flex !important; align-items: center; }
+  .calendar-note { font-size: 12px !important; line-height: 1.65 !important; margin: -12px auto 22px !important; }
+}
+
+@media (min-width: 621px) {
+  .event-actions { gap: 10px; }
+  .event-actions a { min-height: 42px; padding: 11px 14px; font-size: 9px; }
+}
+
+
+/* V18 — restore readable contrast in the first-conversation chat bubbles */
+.intro .chat-card .chat-bubble,
+.intro .chat-card .chat-bubble.her,
+.intro .chat-card .chat-bubble.him {
+  color: #35201b !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+.intro .chat-card .chat-bubble small {
+  color: #67483d !important;
+  opacity: 1 !important;
+}
+.intro .chat-card .chat-reaction {
+  color: #f0a18c !important;
+  text-shadow: 0 1px 5px rgba(0,0,0,.35);
+}
+
+
+/* V19 — readable scrapbook text and animated mobile journey route */
+/* The scrapbook tiles use dark burgundy panels, so their text must not inherit pale cream. */
+.memories-section .memory-tile:not(.memory-photo) .memory-caption {
+  color: #f6d9bd !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+.memories-section .memory-tile:not(.memory-photo) .tile-date {
+  color: #f0b28f !important;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+.memories-section .memory-tile:not(.memory-photo) .tile-chat,
+.memories-section .memory-tile:not(.memory-photo) .tile-chat.her,
+.memories-section .memory-tile:not(.memory-photo) .tile-chat.him {
+  color: #38231f !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.memories-section .memory-tile:not(.memory-photo) .home-doodle,
+.memories-section .memory-tile:not(.memory-photo) .mountain-doodle,
+.memories-section .memory-tile:not(.memory-photo) .rings-doodle,
+.memories-section .memory-tile:not(.memory-photo) .family-icons,
+.memories-section .memory-tile:not(.memory-photo) .family-caption {
+  color: #f1c3a4 !important;
+}
+.memories-section .memory-tile:not(.memory-photo) .home-doodle b,
+.memories-section .memory-tile:not(.memory-photo) .rings-doodle i {
+  color: #e8a17f !important;
+}
+.journey-route-mobile { display: none; }
+@media (max-width: 620px) {
+  .journey-map {
+    min-height: 690px !important;
+    height: 690px !important;
+    max-width: 360px !important;
+    margin: 28px auto 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+  .journey-route-desktop { display: none !important; }
+  .journey-route-mobile {
+    display: block !important;
+    left: 0 !important; top: 0 !important;
+    width: 100% !important; height: 100% !important;
+    overflow: visible !important;
+  }
+  .journey-route-mobile .route-shadow {
+    stroke: #e6c5aa; stroke-width: 10; stroke-dasharray: 2 15; opacity: .7;
+  }
+  .journey-route-mobile .route-line {
+    stroke: #bd8066; stroke-width: 3.5; stroke-dasharray: 8 10;
+    animation: route-flow 9s linear infinite;
+  }
+  .journey-stop, .stop-one, .stop-two, .stop-three, .stop-four, .stop-five {
+    position: absolute !important;
+    width: 148px !important; min-width: 0 !important;
+    min-height: 82px !important; padding: 10px 9px !important;
+    display: flex !important; flex-direction: column !important;
+    align-items: center !important; justify-content: center !important;
+    gap: 4px !important; text-align: center !important;
+    border-radius: 15px !important;
+    background: #fffaf1 !important; color: #674637 !important;
+    box-shadow: 0 9px 22px rgba(70,35,25,.14) !important;
+    transform: translateZ(0) !important;
+  }
+  .journey-stop .stop-icon { width: 30px !important; height: 30px !important; font-size: 17px !important; }
+  .journey-stop b { font-size: 14px !important; line-height: 1.15 !important; }
+  .journey-stop small { font-size: 8px !important; line-height: 1.2 !important; color: #8a6654 !important; }
+  .stop-one { left: 0 !important; right: auto !important; top: 0 !important; }
+  .stop-two { left: auto !important; right: 0 !important; top: 21% !important; }
+  .stop-three { left: 0 !important; right: auto !important; top: 42% !important; }
+  .stop-four { left: auto !important; right: 0 !important; top: 63% !important; }
+  .stop-five { left: 0 !important; right: auto !important; top: 84% !important; }
+  .journey-footnote { margin-top: 18px !important; }
+}
+
+
+/* V20 — force readable copy in all five animated journey-map milestone cards. */
+.journey-section .journey-stop {
+  color: #3b2220 !important;
+  -webkit-text-fill-color: #3b2220 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.journey-section .journey-stop b {
+  color: #3b2220 !important;
+  -webkit-text-fill-color: #3b2220 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-weight: 700 !important;
+}
+.journey-section .journey-stop small {
+  color: #765044 !important;
+  -webkit-text-fill-color: #765044 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-weight: 600 !important;
+  font-size: 11px !important;
+  line-height: 1.35 !important;
+}
+.journey-section .journey-stop .stop-icon {
+  color: #9b5948 !important;
+  -webkit-text-fill-color: #9b5948 !important;
+  opacity: 1 !important;
+}
+@media (max-width: 620px) {
+  .journey-section .journey-stop b { font-size: 14px !important; }
+  .journey-section .journey-stop small { font-size: 10px !important; }
+}
+
+
+/* V21 — target the actual five scrapbook tiles (not the separate journey-map stops).
+   Explicitly set both color and WebKit text fill so inherited theme text cannot wash out copy. */
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) {
+  color: #fff0d9 !important;
+  -webkit-text-fill-color: #fff0d9 !important;
+}
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .tile-date,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .memory-caption,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .memory-caption i,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .home-doodle,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .home-doodle b,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .mountain-doodle,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .mountain-doodle i,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .rings-doodle,
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .rings-doodle i {
+  color: #ffd7b8 !important;
+  -webkit-text-fill-color: #ffd7b8 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,.65) !important;
+}
+.memories-section .scrapbook-grid .memory-tile.memory-chat .tile-chat,
+.memories-section .scrapbook-grid .memory-tile.memory-chat .tile-chat.her,
+.memories-section .scrapbook-grid .memory-tile.memory-chat .tile-chat.him {
+  color: #281714 !important;
+  -webkit-text-fill-color: #281714 !important;
+  background: #fff1df !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  text-shadow: none !important;
+  font-size: clamp(14px, 2.2vw, 17px) !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+}
+.memories-section .scrapbook-grid .memory-tile.memory-chat .tile-chat.him {
+  background: #e3eddf !important;
+}
+.memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .memory-caption {
+  font-size: clamp(8px, 1.1vw, 10px) !important;
+  letter-spacing: .11em !important;
+  line-height: 1.35 !important;
+}
+@media (max-width: 620px) {
+  .memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .memory-caption {
+    left: 10px !important; right: 10px !important; bottom: 12px !important;
+    font-size: 8px !important; letter-spacing: .07em !important;
+  }
+  .memories-section .scrapbook-grid .memory-tile.memory-chat .tile-chat {
+    max-width: 100% !important; padding: 9px 10px !important;
+    font-size: 13px !important; margin-top: 16px !important;
+  }
+  .memories-section .scrapbook-grid .memory-tile:not(.memory-photo) .tile-date {
+    font-size: 9px !important; letter-spacing: .12em !important;
+  }
+}
