@@ -9,25 +9,25 @@
       venue: "Shri Gajanan Maharaj Sanskrutik Bhavan",
       address: "Nagpur, Maharashtra",
       time: "1:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.100174595176433%2C79.10816273734802"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0999093%2C79.106253"
     },
     haldi: {
       venue: "The Backyard (Private Party Venue)",
       address: "Nagpur, Maharashtra",
       time: "6:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.081714285955982%2C79.11695877601356"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0746688%2C79.1180366"
     },
     wedding: {
       venue: "Mahalaxmi Celebration Hall",
       address: "Nagpur, Maharashtra",
       time: "11:45 AM",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.09332228555668%2C79.09543397601392"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0933173%2C79.0980089"
     },
     reception: {
       venue: "The Backyard (Private Party Venue)",
       address: "Nagpur, Maharashtra",
       time: "7:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.081714285955982%2C79.11695877601356"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0746688%2C79.1180366"
     }
   };
   // Optional: add your WhatsApp number with country code, digits only, e.g. 9198XXXXXXXX.
