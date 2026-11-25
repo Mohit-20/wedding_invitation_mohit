@@ -1,33 +1,40 @@
-# Mohit & Akanksha — Storybook Wedding Website
+# Mohit & Akanksha — Wedding Invitation
 
-Responsive static invitation with storybook illustrations, scroll effects and Google Maps venue links.
+A mobile-first, reference-led wedding invitation experience. The opening sequence uses a red velvet/glitter atmosphere, gold name reveal, opening curtains, a stylised rani-pink bridal silhouette on an illuminated circular platform, and a satin transition into parchment invitation sections. The rest of the site preserves the storybook love story, milestones, venue directions, calendar downloads, and encrypted private letter.
 
-## Event schedule
-| Event | Date | Time | Venue |
-|---|---|---|---|
-| Engagement | 28 November 2026 | 1:00 PM onwards | Shri Gajanan Maharaj Sanskrutik Bhavan, Nagpur |
-| Haldi | 2 December 2026 | 6:00 PM onwards | The Backyard (Private Party Venue), Nagpur |
-| Marriage | 3 December 2026 | 11:45 AM | Mahalaxmi Celebration Hall, Nagpur |
-| Reception | 4 December 2026 | 7:00 PM onwards | The Backyard (Private Party Venue), Nagpur |
+## Run locally (Windows)
 
-The supplied Google Maps destination pins are retained.
+From this folder run:
 
-## Files
-- `index.html` — public invitation structure
-- `style.css` — responsive storybook design and animations
-- `script.js` — scroll effects, event configuration and encrypted-letter unlock
-- `assets/` — storybook illustration
-- `private/letter.txt` — local plaintext letter, excluded from Git
-- `tools/encrypt-letter.html` — local encryption utility
+```cmd
+py -m http.server 8000
+```
 
-## Private letter — already encrypted
+Open http://localhost:8000. Keep the terminal open while testing.
 
-The project includes `private/letter.enc`, which contains the personal letter encrypted with PBKDF2-SHA-256 (310,000 iterations) and AES-256-GCM. The passphrase is **not** stored in the website, HTML, JavaScript, or repository. The browser decrypts the letter only after the correct passphrase is entered. The chosen passphrase is intentionally short for this playful reveal, so this is not suitable for protecting highly sensitive information.
+## Publish
 
-The plaintext letter is supplied separately as a local-only file for your own records; do not upload it to GitHub. `.gitignore` excludes `private/letter.txt` if you create that file in this project folder.
+Upload the contents of this folder to the GitHub Pages repository. No Python packages or build step are required. Google Fonts and the Three.js story scene use internet access; the core HTML/CSS invitation still loads without the optional 3D layer.
 
-## Publish with GitHub Pages
-Upload the contents of this project folder to your repository root. Confirm `private/letter.enc` is present. Then open **Settings → Pages → Deploy from a branch → main → /(root)** and save. Open the published HTTPS URL.
+## Important
 
-## WhatsApp RSVP
-In `script.js`, set `WHATSAPP_NUMBER` to your number with country code and digits only if you want the floating RSVP link.
+- The intro bride is a CSS-stylised silhouette, not a photorealistic rigged 3D character.
+- The rotating platform and curtain choreography are CSS animations.
+- Venue map destinations use the coordinates supplied by Mohit.
+- RSVP currently links to the event section; configure a WhatsApp number in `script.js` if a direct WhatsApp RSVP is wanted.
+- The private letter remains encrypted in `private/letter.enc`; do not publish any plaintext version.
+
+
+### V10 desktop layout fix
+The desktop hero portrait now fills the full hero height without the empty top band; the original portrait aspect ratio is preserved and the text column is aligned beside it.
+
+
+## Wedding photo album link
+
+When the photographer shares the Google Drive folder, open `script.js` and set:
+
+```js
+const PHOTO_ALBUM_URL = "https://drive.google.com/drive/folders/YOUR_FOLDER_ID";
+```
+
+Keep the Drive folder shared as **Anyone with the link — Viewer**. The Photos section will automatically change from “Coming soon” to “View & download the photos” when a valid Drive folder/file URL is supplied.
