@@ -4,30 +4,35 @@
 
   // Venue details supplied by Mohit. Map links use the exact coordinates
   // from the Google Maps embed links so directions open at the correct pin.
+  //   The latest coordinates I have are:
+  // - Engagement: 21.0999093, 79.106253
+  // - Haldi: @21.0746688,79.1180366
+  // - Wedding: 21.0933173, 79.0980089
+  // - Reception: same as Haldi.
   const EVENTS = {
     engagement: {
       venue: "Shri Gajanan Maharaj Sanskrutik Bhavan",
       address: "Nagpur, Maharashtra",
       time: "1:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.100174595176433%2C79.10816273734802"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0999093%2C79.1088279"
     },
     haldi: {
       venue: "The Backyard (Private Party Venue)",
       address: "Nagpur, Maharashtra",
       time: "6:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.081714285955982%2C79.11695877601356"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.074668%2C79.1180366"
     },
     wedding: {
       venue: "Mahalaxmi Celebration Hall",
       address: "Nagpur, Maharashtra",
       time: "11:45 AM",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.09332228555668%2C79.09543397601392"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.0933173%2C 79.0980089"
     },
     reception: {
       venue: "The Backyard (Private Party Venue)",
       address: "Nagpur, Maharashtra",
       time: "7:00 PM onwards",
-      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.081714285955982%2C79.11695877601356"
+      mapUrl: "https://www.google.com/maps/dir/?api=1&destination=21.074668%2C79.1180366"
     }
   };
   // Optional: add your WhatsApp number with country code, digits only, e.g. 9198XXXXXXXX.
@@ -324,4 +329,67 @@
     addEventListener("resize", queueStory, {passive:true});
     paintStory();
   }
+})();
+
+
+// Live wedding countdown and downloadable all-day calendar reminders.
+(() => {
+  const weddingMoment = new Date("2026-12-03T11:45:00+05:30");
+  const nodes = {
+    days: document.getElementById("countDays"),
+    hours: document.getElementById("countHours"),
+    minutes: document.getElementById("countMinutes"),
+    seconds: document.getElementById("countSeconds"),
+    caption: document.getElementById("countdownCaption")
+  };
+  if (!nodes.days || !nodes.hours || !nodes.minutes || !nodes.seconds) return;
+  const pad = value => String(value).padStart(2, "0");
+  const updateCountdown = () => {
+    const remaining = weddingMoment.getTime() - Date.now();
+    if (remaining <= 0) {
+      nodes.days.textContent = "00";
+      nodes.hours.textContent = "00";
+      nodes.minutes.textContent = "00";
+      nodes.seconds.textContent = "00";
+      nodes.caption.textContent = "The forever has begun. Thank you for celebrating with us!";
+      return;
+    }
+    const totalSeconds = Math.floor(remaining / 1000);
+    nodes.days.textContent = pad(Math.floor(totalSeconds / 86400));
+    nodes.hours.textContent = pad(Math.floor((totalSeconds % 86400) / 3600));
+    nodes.minutes.textContent = pad(Math.floor((totalSeconds % 3600) / 60));
+    nodes.seconds.textContent = pad(totalSeconds % 60);
+  };
+  updateCountdown();
+  window.setInterval(updateCountdown, 1000);
+
+  const calendarEvents = {
+    engagement: { title: "Mohit & Akanksha — Engagement", date: "20261128", description: "Engagement celebration · 1:00 PM onwards · Nagpur, Maharashtra" },
+    haldi: { title: "Mohit & Akanksha — Haldi", date: "20261202", description: "Haldi celebration · 6:00 PM onwards · Nagpur, Maharashtra" },
+    wedding: { title: "Mohit & Akanksha — Wedding", date: "20261203", description: "Wedding ceremony · 11:45 AM · Nagpur, Maharashtra" },
+    reception: { title: "Mohit & Akanksha — Reception", date: "20261204", description: "Wedding reception · 7:00 PM onwards · Nagpur, Maharashtra" }
+  };
+  document.querySelectorAll("[data-calendar-event]").forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      const item = calendarEvents[link.dataset.calendarEvent];
+      if (!item) return;
+      const ics = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mohit and Akanksha//Wedding Dates//EN",
+        "CALSCALE:GREGORIAN", "BEGIN:VEVENT", `UID:${item.date}-${link.dataset.calendarEvent}@mohit-akanksha`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
+        `DTSTART;VALUE=DATE:${item.date}`, `SUMMARY:${item.title}`,
+        `DESCRIPTION:${item.description}`, "LOCATION:Nagpur, Maharashtra, India", "END:VEVENT", "END:VCALENDAR"
+      ].join("\r\n");
+      const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const download = document.createElement("a");
+      download.href = url;
+      download.download = `mohit-akanksha-${link.dataset.calendarEvent}.ics`;
+      document.body.appendChild(download);
+      download.click();
+      download.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+  });
 })();
