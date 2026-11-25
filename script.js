@@ -179,7 +179,11 @@ Object.entries(EVENTS).forEach(([key, data]) => {
     if (!welcomeScreen || welcomeScreen.classList.contains("is-opening")) return;
     welcomeScreen.classList.add("is-opening");
     document.body.classList.add("invitation-entered");
-    window.setTimeout(() => { welcomeScreen.hidden = true; }, 1250);
+    // Keep the page isolated while the opening overlay fades away.
+    window.setTimeout(() => {
+      welcomeScreen.hidden = true;
+      document.body.classList.remove("invitation-locked");
+    }, 1250);
   };
   openInvitation?.addEventListener("click", enterInvitation);
   skipIntro?.addEventListener("click", enterInvitation);
